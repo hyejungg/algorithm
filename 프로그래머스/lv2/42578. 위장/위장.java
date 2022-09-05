@@ -17,6 +17,7 @@ class Solution {
             else {
                 map.put(clothes[i][1], 1);
             }
+            // map.put(clothes[i][1], map.getOrDefault(clothes[i][1], 0) + 1); // if-else 안쓰고 한 줄로 갈기는 방법
         }
 
         // 조합 구해
