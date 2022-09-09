@@ -1,6 +1,7 @@
+import java.util.*;
+
 class Solution {
     public int solution(int[][] triangle) {
-        int answer = 0;
         int[][] temp = new int[triangle.length][triangle.length];
         temp[0][0] = triangle[0][0];
 
@@ -14,12 +15,8 @@ class Solution {
                 temp[i][j] = triangle[i][j] + Math.max(temp[i - 1][j - 1], temp[i - 1][j]);
             }
         }
-        
-        // 가장 마지막 줄 합 중 가장 큰 애가 answer
-        for (int i = 0; i < triangle.length; i++) {
-            answer = Math.max(temp[triangle.length - 1][i], answer);
-        }
 
-        return answer;
+        // 가장 마지막 줄 합 중 가장 큰 애가 answer
+        return Arrays.stream(temp[temp.length - 1]).max().getAsInt();
     }
 }
