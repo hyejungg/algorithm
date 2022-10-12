@@ -1,27 +1,29 @@
-import java.util.*; 
+import java.util.*;
 
 class Solution {
     public long solution(int n, int[] times) {
         long answer = 0;
         
-        // start, end를 시간으로 잡음
-        long start = 1;
-        long end = (long) n * times[times.length - 1]; // 제일 느리게 걸리는 시간 (long)으로 타입 변환 안해주면 실패!
+        Arrays.sort(times); // 오름차순 정렬
+        
+        long start = 1, end = (long) n * times[times.length - 1];
+        
         while (start <= end) {
             long mid = (start + end) / 2;
             
-            long sum = 0; // 시간 안에 처리 가능한 사람 합
-            for (int i = 0; i < times.length; i++) {
-                sum += mid / times[i];
+            long sum = 0;
+            for (Integer t : times) {
+                sum += mid / t;
             }
-            // 처리 가능한 사람 수가 처리해야 하는 사람보다 많으면
+            
             if (sum >= n) {
-                end = mid - 1; // 시간 줄여
+                end = mid - 1;
                 answer = mid;
             } else {
-                start = mid + 1; // 시간 늘려
+                start = mid + 1;
             }
         }
+        
         return answer;
     }
 }
