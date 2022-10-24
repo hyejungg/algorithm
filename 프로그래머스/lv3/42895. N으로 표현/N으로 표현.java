@@ -1,45 +1,50 @@
 import java.util.*;
 
 class Solution {
+    static List<Integer>[] dp;
+    static int _N;
+    
     public int solution(int N, int number) {
-        if (N == number) return 1;
-
-        // dp 초기화
-        Set<Integer>[] dp = new HashSet[9];
-        int n = 0;
-        for(int i = 1; i < 9; i++){
-            n = (n * 10) + N; // N, NN, NNN, ... 형태로 저장
-            dp[i] = new HashSet<>();
-            dp[i].add(n);
-        }
-
-        for(int i = 1; i <= 8; i++){
-            for(int j = 1; j < i; j++){
-                for(Integer a : dp[j]){
-                    for(Integer b : dp[i - j]){
-                        dp[i].add(a + b);
-                        dp[i].add(a * b);
-                        
-                        // 뺄셈은 음수가 나오면 안돼
-                        if(a > b)
-                            dp[i].add(a - b);
-                        if(b > a)
-                            dp[i].add(b - a);
-
-                        // 나눗셈은 0으로 나누면 안돼
-                        if (b != 0)
-                            dp[i].add(a / b);
-                        if (a != 0)
-                            dp[i].add(b / a);
-                    }
-                }
-            }
-            // 존재하면 i (최소 사용 횟수) return
-           if(dp[i].contains(number)){
+        int answer = -1;
+        
+        // 테이블 정의 및 초기값 세팅
+        _N = N;
+        dp = new ArrayList[10];
+        dp[0] = new ArrayList<>();
+        dp[0].add(0);
+        
+        //
+        for (int i = 1; i <= 8; i++) {
+            dp(i);
+            if (dp[i].contains(number)){
                 return i;
             }
-            if(i == 8) return -1;
         }
-        return -1;
+        
+        return answer;
+    }
+    
+    public static List<Integer> dp(int n) {
+        if (dp[n] != null) return dp[n];
+        
+        // 테이블 초기값 세팅
+        dp[n] = new ArrayList<>();
+        dp[n].add(dp[n - 1].get(0) * 10 + _N);
+        
+        for (int i = 1; i < n; i++) {
+            int j = n - i;
+            List<Integer> dp1 = dp(i);
+            List<Integer> dp2 = dp(j);
+            
+            for (int n1 : dp1) {
+                for (int n2 : dp2) {
+                    dp[n].add(n1 + n2);
+                    dp[n].add(n1 - n2);
+                    dp[n].add(n1 * n2);
+                    if (n2 != 0) dp[n].add(n1 / n2);
+                }
+            }
+        }
+        return dp[n];
     }
 }
