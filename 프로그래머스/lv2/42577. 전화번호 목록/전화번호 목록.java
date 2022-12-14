@@ -1,21 +1,17 @@
 import java.util.*;
+import java.util.stream.*; // Collectors 사용하려면 필요
 
 class Solution {
     public boolean solution(String[] phone_book) {
-        Map<String, Integer> map = new HashMap<>();
-
-        // 일단 넣어
-        for (int i = 0; i < phone_book.length; i++) {
-            map.put(phone_book[i], i);
-        }
-
-        // 검사해
+        Set<String> set = Arrays.stream(phone_book).collect(Collectors.toSet());
+        
         for (int i = 0; i < phone_book.length; i++) {
             for (int j = 0; j < phone_book[i].length(); j++) {
-                if (map.containsKey(phone_book[i].substring(0, j))) // 문자 하나씩 검사
+                if (set.contains(phone_book[i].substring(0, j)))
                     return false;
             }
         }
+        
         return true;
     }
 }
