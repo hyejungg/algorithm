@@ -1,5 +1,3 @@
-// 시간초과 남 ㅠ
-
 import java.io.*;
 import java.util.*;
 
@@ -24,6 +22,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder str = new StringBuilder();
+
         int T = Integer.parseInt(br.readLine());
 
         for (int i = 1; i <= T; i++) {
@@ -59,11 +59,10 @@ public class Main {
             }
 
             if (answer == Integer.MAX_VALUE) answer = -1;
-            StringBuilder str = new StringBuilder();
-            str.append('#').append(i).append(' ').append(answer);
-            bw.write(str.toString());
-            bw.newLine();
+            str.append('#').append(i).append(' ').append(answer).append('\n');
         }
+        bw.write(str.toString());
+        bw.newLine();
         br.close();
         bw.flush();
         bw.close();
@@ -80,10 +79,12 @@ public class Main {
     }
 
     public static int bfs(int x, int y, int N, int M, int K) {
+        int fireCount = 0;
+        if (arr[x][y] == '!') fireCount++;
         Queue<Pos> q = new LinkedList<>();
         q.add(new Pos(x, y));
+        dist[x][y] = 1;
 
-        int fireCount = 0;
         int maxDist = Integer.MIN_VALUE;
         while (!q.isEmpty()) {
             Pos now = q.poll();
@@ -92,7 +93,7 @@ public class Main {
                 int nx = now.x + dx[i];
                 int ny = now.y + dy[i];
 
-                if (fireCount == K) return maxDist;
+                if (fireCount == K) return maxDist - 1;
 
                 if (nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
 
